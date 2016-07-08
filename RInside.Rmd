@@ -1,0 +1,38 @@
+---
+title: "RInside"
+author: "Shaojun Zhang"
+date: "November 12, 2015"
+output: beamer_presentation
+slide_level: 1
+---
+
+## Install
+```{r, eval=FALSE}
+install.packages(c("Rcpp", "RInside"))
+```
+If it doesn't work, try building from source or asking on Stack Overflow.
+
+## C++ to R
+```{r engine='Rcpp', eval = FALSE}
+R["a"] = x;
+R.assign(x, "a");
+```
+- a is the variable we want to create in R and assign value x
+- x can be all C++ basic types (e.g. int, double, boolean, string), STL containers (e.g. vector, map, set) or Rcpp containers (e.g. NumericVector, NumericMatrix)
+
+## R to C++
+- R.parseEvalQ() evaluates string, ignoring any returns
+- R.parseEvalQNT() evaluates string without throwing exceptions, ignoring any returns
+- R.parseEval() evalulates string, then return the value of the last assignment
+- R.parseEvalNT() evalulates string without throwing exceptions
+```{r engine='Rcpp', eval = FALSE}
+R.parseEvalQ(cmd);
+type x = Rcpp::as<type>(R.parseEval(cmd));
+Rcpp::type x((SEXP) R.parseEval(cmd));
+type x = Rcpp::as<type>R["a"];
+```
+
+## How to use?
+- write cpp file
+- write Makefile
+- build and execute
